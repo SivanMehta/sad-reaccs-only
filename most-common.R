@@ -1,12 +1,12 @@
 library(tidyverse)
-library(lubridate)
-library(readr)
 library(tidytext)
+library(lubridate)
 library(stringr)
 library(ggplot2)
 
 # read in data
-data <- read_delim("data/2017-06-20.csv", "\t", escape_double = FALSE, trim_ws = TRUE)
+library(readr)
+data <- read_csv("data/2017-06-20.csv")
 
 # remove escaped characters
 data$text <- gsub("%20", " ", data$text)

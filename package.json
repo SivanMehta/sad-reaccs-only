@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Analyze NYT facebook posts",
   "scripts": {
-    "pull": "./pull.js > ids/$(date +'%Y-%m-%d').csv"
+    "pull": "./pull.js > data/$(date +'%Y-%m-%d').csv"
   },
   "dependencies": {
     "fb": "^2.0.0"

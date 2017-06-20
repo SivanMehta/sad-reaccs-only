@@ -15,16 +15,16 @@ function getReaccs(item) {
       reactions[react.type] += 1
     })
     console.log(
-      item.id + "\t" +
-      item.created_time + "\t" +
-      escape(item.message) + "\t" +
-      reactions.LIKE + "\t" +
-      reactions.HAHA + "\t" +
-      reactions.SAD + "\t" +
-      reactions.LOVE + "\t" +
-      reactions.ANGRY + "\t" +
-      reactions.WOW + "\t" +
-      reactions.PRIDE + "\t"
+      item.id + "," +
+      item.created_time + "," +
+      escape(item.message) + "," +
+      reactions.LIKE + "," +
+      reactions.HAHA + "," +
+      reactions.SAD + "," +
+      reactions.LOVE + "," +
+      reactions.ANGRY + "," +
+      reactions.WOW + "," +
+      reactions.PRIDE
     )
   })
 }
@@ -35,8 +35,8 @@ function setToken(response) {
   }
   FB.setAccessToken(response.access_token)
 
-  FB.api('/nytimes/feed', 'GET', { "fields": "created_time,id,message", "limit":"1000" }, (feed) => {
-    console.log("post_id\ttimestamp\ttext\tLIKE\tHAHA\tSAD\tLOVE\tANGRY\tWOW\tPRIDE")
+  FB.api('/nytimes/feed', 'GET', { "fields": "created_time,id,message", "limit":"100" }, (feed) => {
+    console.log("post_id,timestamp,text,LIKE,HAHA,SAD,LOVE,ANGRY,WOW,PRIDE")
     feed.data.map(getReaccs)
   })
 }
