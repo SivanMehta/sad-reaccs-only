@@ -6,7 +6,6 @@
     "pull": "./pull.js > ids/$(date +'%Y-%m-%d').csv"
   },
   "dependencies": {
-    "async": "^2.4.1",
     "fb": "^2.0.0"
   }
 }
