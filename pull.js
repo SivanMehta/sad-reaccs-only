@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 
 var FB = require('fb')
-const config = require("./config.json")
 
-var accessToken;
+// The configuration file is not included in version control because
+// it contains my client_id and client_secret. You can get your own here:
+// https://developers.facebook.com/apps/
+const config = require("./config.json")
+var accessToken
 
 FB.api('oauth/access_token', {
     client_id: config.client_id,

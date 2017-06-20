@@ -1,6 +1,6 @@
-:cry: Reaccs Only:
+# :cry: Reaccs Only:
 
-Analyzing how people react to the [New York Times on Facebook](https://www.facebook.com/nytimes/). Can we predict how people will react given the text of the message? 
+Analyzing how people react to the [New York Times on Facebook](https://www.facebook.com/nytimes/). Can we predict how people will react given the text of the message?
 
 Facebook Graph API limits you only to 100 posts per API call, so I'm just gonna update the dataset in this repo with by-day results via `npm run pull`. On my Macbook, it takes about 2.2 seconds to run:
 
