@@ -6,7 +6,6 @@ var FB = require('fb')
 // it contains my client_id and client_secret. You can get your own here:
 // https://developers.facebook.com/apps/
 const config = require("./config.json")
-var accessToken
 
 function getReaccs(item) {
   FB.api(item.id + '/reactions', 'GET', {"fields":"type","limit":"1000"}, (response) => {
