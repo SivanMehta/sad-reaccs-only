@@ -3,3 +3,4 @@ config.json
 yarn.lock
 .Rproj.user
 .Rhistory
+.RData

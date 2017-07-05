@@ -1,31 +1,49 @@
+rm(list = ls())
 library(tidyverse)
 library(tidytext)
 library(lubridate)
 library(stringr)
 library(ggplot2)
 
-# read in data
+# define dataset
+dat <- data.frame(post_id = character(),
+                 timestamp = character(), 
+                 text = character(),
+                 LIKE = integer(),
+                 HAHA = integer(),
+                 SAD = integer(),
+                 LOVE = integer(),
+                 ANGRY = integer(),
+                 WOW = integer(),
+                 PRIDE = integer())
+
+# read in all data
 library(readr)
-data <- read_csv("data/2017-06-20.csv")
+for(fname in list.files("data/")) {
+  filename <- paste("data/", fname, sep = "")
+  imported <- as.data.frame(read_csv(filename))
+  print(filename)
+  dat <- rbind(dat, imported)
+}
 
 # remove escaped characters
-data$text <- gsub("%20", " ", data$text)
-data$text <- gsub("%22", "'", data$text)
-data$text <- gsub("%27", "'", data$text)
-data$text <- gsub("%2C", ",", data$text)
-data$text <- gsub("%3A", ":", data$text)
-data$text <- gsub('%3F', "", data$text)
-data$text <- gsub('201', "", data$text)
-data$text <- gsub('2019s', "", data$text)
-data$text <- gsub('2014', "", data$text)
+dat$text <- gsub("%20", " ", dat$text)
+dat$text <- gsub("%22", "'", dat$text)
+dat$text <- gsub("%27", "'", dat$text)
+dat$text <- gsub("%2C", ",", dat$text)
+dat$text <- gsub("%3A", ":", dat$text)
+dat$text <- gsub('%3F', "", dat$text)
+dat$text <- gsub('201', "", dat$text)
+dat$text <- gsub('2019s', "", dat$text)
+dat$text <- gsub('2014', "", dat$text)
 
 nyt_stop_words <- tibble(
   word = c('new', 'york', 'times', 'opinion', 'section', 'http', 'breaking', 'news', 'nyti.ms'),
   lexicon = 'NYT'
 )
 
-# generate dataframe of each distinct word
-common.words <- data %>%
+# generate datframe of each distinct word
+common.words <- dat %>%
   arrange(text) %>%
   unnest_tokens(word, text, drop = FALSE) %>%
   distinct(post_id, word, .keep_all = TRUE) %>%
@@ -35,7 +53,8 @@ common.words <- data %>%
   filter(nchar(word) > 3) %>%
   group_by(word) %>%
   mutate(word_total = n()) %>%
-  ungroup()
+  ungroup() %>%
+  select(word)
 
 # graph the most common ones
 common.words %>%
@@ -46,6 +65,5 @@ common.words %>%
     geom_col() +
     coord_flip() +
     labs(title = "Most common words in New York Times Articles",
-         subtitle = "Last 100 articles pulled, stop words removed",
+         subtitle = paste("Last", nrow(dat) ,"articles pulled, stop words removed"),
          y = "# of uses")
-
