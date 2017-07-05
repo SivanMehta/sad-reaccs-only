@@ -44,7 +44,7 @@ nyt_stop_words <- tibble(
 
 # generate datframe of each distinct word
 common.words <- dat %>%
-  arrange(text) %>%
+  mutate(reaction = colnames(dat)[apply(dat, 1, which.max)]) %>%
   unnest_tokens(word, text, drop = FALSE) %>%
   distinct(post_id, word, .keep_all = TRUE) %>%
   anti_join(stop_words, by = "word") %>%
@@ -54,7 +54,7 @@ common.words <- dat %>%
   group_by(word) %>%
   mutate(word_total = n()) %>%
   ungroup() %>%
-  select(word)
+  select(word, post_id, reaction)
 
 # graph the most common ones
 common.words %>%
