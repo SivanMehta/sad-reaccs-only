@@ -12,31 +12,20 @@ num.pairs <- common.words %>%
   pairwise_count(word, post_id, sort = TRUE, upper = FALSE) %>%
   mutate(pair = paste(item1, item2, sep = "+"))
 
-# tibble of pairs and their correlations
-correlation.pairs <- common.words %>%
-  pairwise_cor(word, post_id, upper = FALSE) %>%
-  mutate(pair = paste(item1, item2, sep = "+"))
-
-pair.combo <- correlation.pairs %>%
-  left_join(num.pairs, by = c('pair')) %>%
-  select(item1.x, item2.x, correlation, pair, n) %>%
-  filter(!is.na(n))
-
 # plot of most common pairs
-pair.combo %>%
+num.pairs %>%
   filter(n > 3) %>%
-  ggplot(aes(reorder(pair, n), n)) +
+  ggplot(aes(x = reorder(pair, n), y = n)) +
   geom_col() +
   coord_flip() +
   labs(
     title = "Most common pairs of words in NYT Articles",
     subtitle = paste("Last", nrow(dat) ,"articles pulled, stop words removed"),
-    y = "# of pairs"
-  )
+    y = "# of pairs")
 
 # network graph of pairs weighted by commonality
 set.seed(1)
-pair.combo %>%
+num.pairs %>%
   filter(n > 3) %>%
   graph_from_data_frame() %>%
   ggraph(layout = "kk") +
