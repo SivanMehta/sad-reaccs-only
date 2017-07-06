@@ -38,9 +38,11 @@ dat$text <- gsub('2019s', "", dat$text)
 dat$text <- gsub('2014', "", dat$text)
 
 nyt_stop_words <- tibble(
-  word = c('new', 'york', 'times', 'opinion', 'section', 'http', 'breaking', 'news', 'nyti.ms'),
-  lexicon = 'NYT'
-)
+  word = c('new', 'york', 'times', 
+           'opinion', 'section', 'http', 
+           'breaking', 'news', 'nyti.ms',
+           'comments', 'writers', 'live',
+           'week'), lexicon = 'NYT')
 
 # generate datframe of each distinct word
 common.words <- dat %>%
@@ -49,7 +51,6 @@ common.words <- dat %>%
   distinct(post_id, word, .keep_all = TRUE) %>%
   anti_join(stop_words, by = "word") %>%
   anti_join(nyt_stop_words, by = "word") %>%
-  filter(str_detect(word, "[^\\d]")) %>%
   filter(nchar(word) > 3) %>%
   group_by(word) %>%
   mutate(word_total = n()) %>%
