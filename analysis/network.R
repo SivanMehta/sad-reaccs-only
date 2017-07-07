@@ -29,8 +29,8 @@ num.pairs %>%
   filter(n > 3) %>%
   graph_from_data_frame() %>%
   ggraph(layout = "kk") +
-  geom_edge_link(aes(edge_alpha = n, edge_width = 2), edge_colour = "cyan4") +
+  geom_edge_link(aes(edge_alpha = n, edge_width = 2)) +
   geom_node_point(size = 2) +
   geom_node_text(aes(label = name), repel = TRUE, 
                  point.padding = unit(0.2, "lines")) +
-  theme_void()
+  theme_graph()
