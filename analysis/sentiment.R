@@ -1,9 +1,8 @@
 # assuming that the loading in most-common.R is already run
-
 post.scores <- common.words %>%
   inner_join(get_sentiments("afinn")) %>%
   group_by(post_id, reaction) %>% 
-  summarise(post.score = sum(score))
+  summarize(post.score = sum(score), sentiment = mean(sentiment))
 
 # histogram for each dominant reaction
 post.scores %>%
@@ -23,3 +22,11 @@ post.scores %>%
       x = "Proportion of Likes",
       y = "Sentiment"
     )
+
+# scatter plot of by-word sentiment vs. sentimentr analysis
+post.scores %>%
+  right_join(dat) %>%
+  mutate(like.proportion = LIKE / (LIKE + HAHA + SAD + LOVE + ANGRY + WOW + PRIDE)) %>%
+  ggplot() +
+  aes(x = post.score, y = sentiment, fill = like.proportion) +
+  geom_point() + geom_smooth()

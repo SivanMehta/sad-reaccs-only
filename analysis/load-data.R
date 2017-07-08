@@ -3,7 +3,7 @@ library(tidyverse)
 library(tidytext)
 library(lubridate)
 library(stringr)
-library(ggplot2)
+library(sentimentr)
 
 # define dataset
 dat <- data.frame(post_id = character(),
@@ -37,6 +37,9 @@ dat$text <- gsub('201', "", dat$text)
 dat$text <- gsub('2019s', "", dat$text)
 dat$text <- gsub('2014', "", dat$text)
 
+# add sentiment scores
+dat <- dat %>% mutate(sentiment = syuzhet::get_sentiment(text))
+
 nyt_stop_words <- tibble(
   word = c('new', 'york', 'times', 
            'opinion', 'section', 'http', 
@@ -57,4 +60,4 @@ common.words <- dat %>%
   group_by(word) %>%
   mutate(word_total = n()) %>%
   ungroup() %>%
-  select(word, post_id, reaction)
+  select(word, post_id, reaction, sentiment)
