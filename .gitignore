@@ -4,3 +4,4 @@ yarn.lock
 .Rproj.user
 .Rhistory
 .RData
+data/*
